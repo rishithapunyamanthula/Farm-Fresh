@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{% block title %}FarmFresh Platform{% endblock %}</title>
+
+    <!-- Embedded CSS -->
+    <style>
+        html, body {
+            height: 100%;  /* Ensure the body takes full height */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;  /* Flexbox for vertical layout */
+
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            background-image: url('{% static "images/farm_banner.webp" %}');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .navbar {
+            background-color: #215752;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 4px 2px -2px gray;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo img {
+            height: 50px;
+            vertical-align: middle;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .nav-links a:hover {
+            background-color: #709d8a;
+        }
+        /* Responsive Navbar */
+        @media (max-width: 768px) {
+            .navbar .container {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-links li {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+
+        /* Add padding to main content to avoid overlap with fixed navbar */
+        main {
+            flex: 1;
+            width: 80%;
+            margin: 20px auto;
+            padding-top: 70px;  /* Space to account for navbar height */
+        }
+
+        h1 {
+            color: #215752;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-container input, .form-container button {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-container button {
+            background-color: #82ab9a;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #82ab9a;
+        }
+
+        footer {
+            background-color: #215752;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header and Navigation -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'customer_home' %}">
+                        <img src="{% static 'images/farmfresh_logo.png' %}" alt="FarmFresh Logo" style="height: 50px; vertical-align: middle;">
+                    </a>
+                    {% else %}
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/farmfresh_logo.png' %}" alt="FarmFresh Logo" style="height: 50px; vertical-align: middle;">
+                    </a>
+                    {% endif %}
+                </div>
+                <ul class="nav-links">
+                    {% if user.is_authenticated %}
+                        <!-- Customer-specific links when logged in -->
+                        <li><a href="{% url 'customer_home' %}">Home</a></li>
+                        <li><a href="{% url 'browse_products_by_category' %}">Products by Category</a></li>
+                        <li><a href="{% url 'view_subscriptions' %}"> Your Subscriptions </a></li>
+                        <li><a href="{% url 'create_subscription_box' %}"> New Subscriptions Box </a></li>
+                        <li><a href="{% url 'view_customer_profile' %}">Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <!-- Show both customer and seller login/signup links when not logged in -->
+                        <li><a href="{% url 'customer_login' %}">Customer Login</a></li>
+                        <li><a href="{% url 'customer_register' %}">Customer Signup</a></li>
+                        <li><a href="{% url 'seller_login' %}">Seller Login</a></li>
+                        <li><a href="{% url 'seller_register' %}">Seller Signup</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 FarmFresh Products. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,129 @@
+{% extends 'customer_base.html' %}
+{% block content %}
+<div class="categories-section">
+    <h2>Browse Products by Category</h2>
+
+    <!-- Categories as buttons -->
+    <div class="category-buttons">
+        {% for key, value in categories %}
+            <a href="?category={{ key }}" class="category-btn {% if selected_category == key %}active{% endif %}">
+                {{ value }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Products Section -->
+<div class="product-list">
+    <h3>Products in {{ selected_category }}</h3>
+    <div class="products-grid">
+        {% for product in products %}
+            <div class="product-card">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                <div class="product-details">
+                    <h4>{{ product.name }}</h4>
+                    <p>{{ product.description|truncatewords:10 }}</p>
+                    <p><strong>Price:</strong> ${{ product.price }}</p>
+                    <a href="{% url 'product_detail' product.id %}" class="btn">View Details</a>
+                </div>
+            </div>
+        {% empty %}
+            <p>No products available in this category.</p>
+        {% endfor %}
+    </div>
+</div>
+<style>
+    /* Categories Section */
+    .categories-section {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .category-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .category-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #82ab9a;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .category-btn.active {
+        background-color: #4CAF50; /* Highlight the selected category */
+        transform: scale(1.05); /* Slightly enlarge the active category */
+    }
+
+    .category-btn:hover {
+        background-color: #709d8a;
+    }
+
+    /* Products Section */
+    .product-list {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Four cards per row */
+        gap: 20px;
+        justify-items: center;
+    }
+
+    .product-card {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 15px;
+        width: 100%;
+        max-width: 250px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+
+    .product-card:hover {
+        transform: translateY(-5px); /* Slight lift on hover */
+    }
+
+    .product-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .product-details {
+        margin-top: 10px;
+    }
+
+    .product-details h4 {
+        color: #4CAF50;
+        margin-bottom: 5px;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 8px 15px;
+        background-color: #82ab9a;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+        background-color: #4CAF50;
+    }
+</style>
+{% endblock %}
+
+

@@ -1,0 +1,212 @@
+{% extends 'customer_base.html' %}
+{% block content %}
+<div class="product-detail-container">
+    <div class="product-detail-card">
+        <div class="product-image-container">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+        </div>
+        <div class="product-info">
+            <h2>{{ product.name }}</h2>
+            <p class="product-description">{{ product.description }}</p>
+            <p class="product-price">Price: ${{ product.price }}</p>
+            <p class="product-availability">Available: {{ product.available }}</p>
+            
+            <!-- Add to Cart Button
+            <form method="post" action="{% url 'product_detail' product.id %}" class="form-inline">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary">Add to Cart</button>
+            </form> -->
+            
+             <!-- Add to Box Button -->
+             <form method="post" action="{% url 'add_product_to_box' product.id %}" class="form-inline">
+                {% csrf_token %}
+                <select name="box" class="box-select">
+                    {% for box in user.boxes.all %}
+                        <option value="{{ box.id }}">{{ box.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-secondary">Add to Box</button>
+            </form>
+        </div>
+        <!-- Comments and Ratings Section -->
+<div class="comments-section">
+    <h4>Customer Comments and Ratings</h4>
+    <ul>
+        {% for comment in product.comments.all %}
+            <li>
+                <strong>{{ comment.customer.user.username }}</strong> rated {{ comment.rating }} / 5<br>
+                <p>{{ comment.comment }}</p>
+                <small>{{ comment.created_at }}</small>
+            </li>
+        {% empty %}
+            <li>No comments yet. Be the first to leave a review!</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_comment' product.id %}" class="btn">Give Rating and Comment</a>
+    <h4>Questions & Answers</h4>
+    <ul>
+        {% for question in product.questions.all %}
+            <li>
+                <strong>{{ question.customer.user.username }}:</strong> {{ question.question }}<br>
+                {% if question.response %}
+                    <p><strong>Seller Response:</strong> {{ question.response }}</p>
+                {% else %}
+                    <p><em>Awaiting response...</em></p>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>No questions yet. Ask the seller a question!</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'add_question' product.id %}" class="btn">Any Questions about Products</a>
+</div>
+    </div>
+    
+</div>
+
+
+<style>
+     /* Comments section */
+     .comments-section {
+        width: 100%;
+        max-width: 600px;
+        margin-top: 20px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .comments-section h4 {
+        color: #4CAF50;
+    }
+
+    .comments-section ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .comments-section li {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        background-color: #82ab9a;
+    }
+
+    .btn:hover {
+        background-color: #4CAF50;
+    }
+    /* Container for the product detail */
+    .product-detail-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        margin-top: 20px;
+    }
+
+    /* Product detail card */
+    .product-detail-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 600px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Image container */
+    .product-image-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+
+    /* Product image styling */
+    .product-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+
+    /* Product information styling */
+    .product-info {
+        text-align: center;
+    }
+
+    .product-info h2 {
+        color: #4CAF50;
+        margin-bottom: 10px;
+    }
+
+    .product-description {
+        margin: 10px 0;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .product-price, .product-availability {
+        margin: 5px 0;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    /* Forms for buttons */
+    .form-inline {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    /* Button styling */
+    .btn {
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary {
+        background-color: #82ab9a;
+    }
+
+    .btn-primary:hover {
+        background-color: #4CAF50;
+    }
+
+    .btn-secondary {
+        background-color: #FFA500;
+    }
+
+    .btn-secondary:hover {
+        background-color: #FF8C00;
+    }
+
+    /* Dropdown styling */
+    .box-select {
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+</style>
+{% endblock %}

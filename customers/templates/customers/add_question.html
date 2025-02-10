@@ -1,0 +1,11 @@
+{% extends 'customer_base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2>Ask a Question about {{ product.name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit Question</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'customer_base.html' %}
+{% block content %}
+<div class="subscriptions-container">
+    <h2>Your Subscription Boxes</h2>
+    <div class="subscription-list">
+        {% for box in boxes %}
+            <div class="subscription-box">
+                <h3>{{ box.name }}</h3>
+                <p>{{ box.description }}</p>
+                <p><strong>Frequency:</strong> {{ box.frequency }}</p>
+                <p><strong>Status:</strong> {% if box.is_active %}Active{% else %}Inactive{% endif %}</p>
+                <a href="{% url 'toggle_subscription_status' box.id %}" class="btn btn-primary">
+                    {% if box.is_active %}Deactivate{% else %}Activate{% endif %}
+                </a>
+
+                <!-- Table of products in this subscription box -->
+                <h4>Products in this Box:</h4>
+                <table class="product-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in box.box_products.all %}
+                            <tr>
+                                <td>{{ product.product.name }}</td>
+                                <td>{{ product.product.description }}</td>
+                                <td>${{ product.product.price }}</td>
+                                <td>
+                                    <a href="{% url 'delete_product_from_box' box.id product.product.id %}" class="btn btn-danger">Remove</a>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4">No products in this subscription box.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% empty %}
+            <p>You have no subscription boxes. <a href="{% url 'create_subscription_box' %}">Create one now!</a></p>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .subscriptions-container {
+        padding: 20px;
+    }
+
+    .subscription-list {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .subscription-box {
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .subscription-box h3 {
+        color: #4CAF50;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        border-radius: 5px;
+        text-decoration: none;
+        color: white;
+        background-color: #82ab9a;
+        margin-right: 10px;
+    }
+
+    .btn:hover {
+        background-color: #4CAF50;
+    }
+
+    .btn-danger {
+        background-color: #d9534f;
+    }
+
+    .btn-danger:hover {
+        background-color: #c9302c;
+    }
+
+    /* Product Table Styling */
+    .product-table {
+        width: 100%;
+        margin-top: 15px;
+        border-collapse: collapse;
+    }
+
+    .product-table thead {
+        background-color: #82ab9a;
+        color: white;
+    }
+
+    .product-table th, .product-table td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .product-table th {
+        font-weight: bold;
+    }
+
+    .product-table tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+</style>
+{% endblock %}
