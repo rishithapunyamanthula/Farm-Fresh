@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="questions-container">
+    <h2>Product Questions</h2>
+    {% for product in products %}
+        <div class="product-section">
+            <h3>{{ product.name }}</h3>
+            <p>{{ product.description }}</p>
+            <table class="questions-table">
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Question</th>
+                        <th>Response</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for question in product.questions.all %}
+                        <tr>
+                            <td>{{ question.customer.user.username }}</td>
+                            <td>{{ question.question }}</td>
+                            <td>{% if question.response %}{{ question.response }}{% else %}<em>Pending</em>{% endif %}</td>
+                            <td>
+                                {% if not question.response %}
+                                    <a href="{% url 'respond_to_question' question.id %}" class="btn btn-primary">Respond</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4">No questions for this product.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endfor %}
+</div>
+
+<style>
+    .questions-container {
+        padding: 20px;
+    }
+
+    .product-section {
+        margin-bottom: 30px;
+    }
+
+    .questions-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    .questions-table th, .questions-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+
+    .questions-table th {
+        background-color: #82ab9a;
+        color: white;
+    }
+
+    .btn-primary {
+        background-color: #4CAF50;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+
+    .btn-primary:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock %}

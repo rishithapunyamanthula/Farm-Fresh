@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="padding: 20px; text-align: center;">
+    <h2>Product Statistics</h2>
+    
+    <!-- Chart 1: Average Rating per Product -->
+    <div id="avgRatingChartContainer" style="width: 100%; height: 360px; margin-bottom: 20px;"></div>
+
+    <!-- Chart 2: Product Demand (Number of Subscriptions) -->
+    <div id="productDemandChartContainer" style="width: 100%; height: 360px;"></div>
+</div>
+
+
+<!-- Include CanvasJS library from the official CDN -->
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<p id="avg-rating-data">{{ avg_rating_data_points|json_script:"avg_rating_data" }}</p>
+<p type="application/json" id="subscription-count-data">{{ subscription_count_data_points|json_script:"subscription_count_data" }}</p>
+
+<script>
+    window.onload = function () {
+        // Retrieve JSON data from the script tags
+        const avgRatingDataPoints = JSON.parse(document.getElementById('avg-rating-data').textContent);
+        const subscriptionCountDataPoints = JSON.parse(document.getElementById('subscription-count-data').textContent);
+
+        // Chart 1: Average Rating per Product
+        var avgRatingChart = new CanvasJS.Chart("avgRatingChartContainer", {
+            animationEnabled: true,
+            title: {
+                text: "Average Rating per Product"
+            },
+            data: [{
+                type: "column",
+                dataPoints: avgRatingDataPoints
+            }]
+        });
+        avgRatingChart.render();
+
+        // Chart 2: Product Demand (Number of Subscriptions)
+        var productDemandChart = new CanvasJS.Chart("productDemandChartContainer", {
+            animationEnabled: true,
+            title: {
+                text: "Product Demand (Number of Subscriptions)"
+            },
+            data: [{
+                type: "column",
+                dataPoints: subscriptionCountDataPoints
+            }]
+        });
+        productDemandChart.render();
+    }
+</script>
+
+{% endblock %}

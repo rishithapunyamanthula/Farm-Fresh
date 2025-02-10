@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .inventory-table {
+      width: 100%;
+      overflow-x: auto;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+  
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+  
+    th {
+      background-color: #82ab9a;
+      color: white;
+    }
+  
+    /* Small icon size for product images */
+    .product-icon {
+      width: 40px;  /* Set the image width to a small size */
+      height: 40px; /* Set the image height to a small size */
+      object-fit: cover;  /* Maintain aspect ratio and cover the space */
+      border-radius: 5px; /* Optional: rounded corners */
+    }
+  
+    .pagination {
+      margin-top: 20px;
+      text-align: center;
+    }
+  
+    .pagination a {
+      color: #82ab9a;
+      text-decoration: none;
+      margin: 0 5px;
+      padding: 5px 10px;
+      border: 1px solid #82ab9a;
+      border-radius: 4px;
+    }
+  
+    .pagination a:hover {
+      background-color: #82ab9a;
+      color: white;
+    }
+  
+    .pagination span {
+      margin: 0 10px;
+    }
+    /* Button styling */
+    button {
+      background-color: #82ab9a; /* Solid color */
+      color: white; /* Text color */
+      border: none;
+      border-radius: 20px; /* Rounded corners */
+      padding: 10px 15px; /* Padding for better button size */
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  
+    button:hover {
+      background-color: #6f9484; /* Darker shade on hover */
+    }
+  
+    /* Ensuring links within buttons look like buttons */
+    button a {
+      color: white; /* Link text color */
+      text-decoration: none; /* Remove underline */
+    }
+  </style>
+  <h2>My Inventory</h2>
+
+  <div class="inventory-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product Name</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Availability</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in page_obj %}
+          <tr>
+            <td><img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-icon"></td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.get_category_display }}</td>
+            <td>${{ product.price }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>
+              {% if product.available %}
+                Available
+              {% else %}
+                Not Available
+              {% endif %}
+            </td>
+            <td>
+              <button><a href="{% url 'edit_product' product.id %}">Edit</a></button> |
+              <button><a href="{% url 'quantity_product' product.id %}">Update Quantity</a></button> |
+              <button><a href="{% url 'availability_product' product.id %}">Update Availability</a></button> |
+              <button><a href="{% url 'delete_product' product.id %}">Delete</a></button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page=1">First</a>
+      <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+    
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+    {% endif %}
+  </div>
+{% endblock %}
+
+

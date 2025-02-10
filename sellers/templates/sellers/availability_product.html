@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-container">
+    <h1>Update Product Availability</h1>
+
+    <!-- Display form errors -->
+    {% if form.errors %}
+    <ul>
+        {% for field, errors in form.errors.items %}
+        <li>{{ field }}: {{ errors }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Display messages (e.g., success, error) -->
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save Changes</button>
+  </form>
+</div>
+{% endblock %}

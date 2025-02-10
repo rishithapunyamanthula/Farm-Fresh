@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% load static %} 
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+    /* Global CSS */
+    html, body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Prevent horizontal scrolling */
+        background-image: url('{% static "images/farm_banner.webp" %}');
+        background-size: cover;
+        background-position: center;
+    }
+
+    /* Full height for welcome section to cover the first window */
+    .welcome-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 50vh;
+        color: white;
+        padding: 0 20px;
+    }
+
+    .welcome-section h1 {
+        font-size: 48px;
+        margin-bottom: 20px;
+    }
+
+    .welcome-section p {
+        font-size: 20px;
+        margin-bottom: 30px;
+    }
+
+    /* Flex layout for product sections with zigzag pattern */
+    .product-section {
+        padding: 40px 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .section-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%; /* Ensure section fits within the viewport */
+        max-width: 1200px;
+        gap: 40px;
+        padding: 0 20px; /* Add padding to avoid overflowing the content */
+    }
+
+    .product-section:nth-child(odd) .section-content {
+        flex-direction: row; /* Text on the left, image on the right */
+    }
+
+    .product-section:nth-child(even) .section-content {
+        flex-direction: row-reverse; /* Image on the left, text on the right */
+    }
+
+    .product-image {
+        width: 45%;
+        max-width: 600px;
+        border-radius: 8px;
+    }
+
+    .section-text {
+        width: 50%;
+        padding: 0 20px;
+        text-align: left;
+    }
+
+    .section-text h2 {
+        color: #215752;
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+
+    .section-text p {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        background-color: #215752;
+        color: white;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background-color: #215752;
+    }
+
+    .btn-secondary {
+        background-color: #215752;
+    }
+
+    .newsletter-signup {
+        text-align: center;
+        padding: 20px;
+        background-color: #215752;
+        color: #fff;
+    }
+
+    .newsletter-signup input {
+        padding: 10px;
+        margin-right: 10px;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    footer {
+        background-color: #215752;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
+</style>
+
+<!-- Welcome Section -->
+<section class="welcome-section">
+    <h1>Welcome to FarmFresh</h1>
+    <p>Your one-stop destination for fresh products delivered straight from the farm to your table.</p>
+    <a href="#" class="btn btn-primary">Shop Now</a>
+</section>
+
+<!-- Section 1: Fresh Produce -->
+<section class="product-section">
+    <div class="section-content">
+        <div class="section-text">
+            <h2>Fresh Produce</h2>
+            <p>Hand-picked daily, our selection of organic vegetables and fruits is grown naturally without any harmful chemicals. Savor the flavor of nature!</p>
+            <a href="#" class="btn btn-secondary">Explore Fresh Produce</a>
+        </div>
+        <img src="{% static 'images/fresh_produce.webp' %}" alt="Fresh produce with vegetables and fruits" class="product-image">
+    </div>
+</section>
+
+<!-- Section 2: Organic Dairy -->
+<section class="product-section">
+    <div class="section-content">
+        <img src="{% static 'images/organic_dairy.webp' %}" alt="Organic dairy products including milk and cheese" class="product-image">
+        <div class="section-text">
+            <h2>Organic Dairy</h2>
+            <p>Pure, wholesome, and packed with nutrients. Our dairy products are sourced from grass-fed cows and are free from artificial additives.</p>
+            <a href="#" class="btn btn-secondary">Shop Organic Dairy</a>
+        </div>
+    </div>
+</section>
+
+<!-- Section 3: Baked Goods -->
+<!-- <section class="product-section">
+    <div class="section-content">
+        <div class="section-text">
+            <h2>Baked Goods</h2>
+            <p>From artisan breads to pastries, our bakers craft delightful treats using organic ingredients. Perfect for breakfast or as a snack!</p>
+            <a href="#" class="btn btn-secondary">Try Baked Goods</a>
+        </div>
+        <img src="{% static 'images/baked_goods.webp' %}" alt="Freshly baked bread and pastries" class="product-image">
+    </div>
+</section> -->
+
+<!-- Newsletter and Footer Section -->
+<section class="footer-section">
+    <div class="newsletter-signup">
+        <h3>Stay Updated</h3>
+        <p>Subscribe to get fresh farm news and offers!</p>
+        <form action="#" method="post">
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+        </form>
+    </div>
+</section>
+
+{% endblock %}

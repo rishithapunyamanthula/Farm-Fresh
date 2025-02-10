@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="dashboard-container">
+    <h2>Seller Dashboard</h2>
+    <div class="dashboard-links">
+        <a href="{% url 'view_comments_ratings' %}" class="dashboard-link">View Customer Comments & Ratings</a>
+        <a href="{% url 'view_and_answer_questions' %}" class="dashboard-link">View & Answer Customer Questions</a>
+        <a href="{% url 'seller_statistics' %}" class="dashboard-link">View Product Analytics</a>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .dashboard-container h2 {
+        color: #4CAF50;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .dashboard-link {
+        display: inline-block;
+        padding: 15px 30px;
+        background-color: #82ab9a;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .dashboard-link:hover {
+        background-color: #4CAF50;
+    }
+</style>
+{% endblock %}

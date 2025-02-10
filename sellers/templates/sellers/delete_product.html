@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+   /* Button styling */
+   button {
+      background-color: #82ab9a; /* Solid color */
+      color: white; /* Text color */
+      border: none;
+      border-radius: 20px; /* Rounded corners */
+      padding: 10px 15px; /* Padding for better button size */
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      font-size: 14px;
+    }
+  
+    button:hover {
+      background-color: #6f9484; /* Darker shade on hover */
+    }
+  
+    /* Ensuring links within buttons look like buttons */
+    button a {
+      color: white; /* Link text color */
+      text-decoration: none; /* Remove underline */
+    }
+</style>
+<div class="form-container">
+    <h1>Delete Product</h1>
+
+    <!-- Display form errors -->
+    {% if form.errors %}
+    <ul>
+        {% for field, errors in form.errors.items %}
+        <li>{{ field }}: {{ errors }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Display messages (e.g., success, error) -->
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+  <p>Are you sure you want to delete "{{ product.name }}"?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, Delete</button>
+  </form>
+  <button><a href="{% url 'view_inventory' %}">Cancel</a></button>
+  </div>
+{% endblock %}
